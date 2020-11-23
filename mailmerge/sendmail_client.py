@@ -9,6 +9,7 @@ import configparser
 import getpass
 from .exceptions import MailmergeError
 from . import utils
+import sys
 
 
 class SendmailClient(object):
@@ -89,9 +90,10 @@ class SendmailClient(object):
                 .format(self.host, self.port, self.username, err)
             )
         except smtplib.SMTPException as err:
-            raise MailmergeError(
+            print(
                 "{}:{} failed to send message: {}"
-                .format(self.host, self.port, err)
+                .format(self.host, self.port, err),
+                file=sys.stderr
             )
         except socket.error as err:
             raise MailmergeError(
